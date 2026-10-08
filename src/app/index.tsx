@@ -1,98 +1,149 @@
-import * as Device from 'expo-device';
-import { Platform, StyleSheet } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import React from 'react';
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+  StatusBar,
+  Alert,
+} from 'react-native';
 
-import { AnimatedIcon } from '@/components/animated-icon';
-import { HintRow } from '@/components/hint-row';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { WebBadge } from '@/components/web-badge';
-import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
-
-function getDevMenuHint() {
-  if (Platform.OS === 'web') {
-    return <ThemedText type="small">use browser devtools</ThemedText>;
-  }
-  if (Device.isDevice) {
-    return (
-      <ThemedText type="small">
-        shake device or press <ThemedText type="code">m</ThemedText> in terminal
-      </ThemedText>
-    );
-  }
-  const shortcut = Platform.OS === 'android' ? 'cmd+m (or ctrl+m)' : 'cmd+d';
+export default function App() {
   return (
-    <ThemedText type="small">
-      press <ThemedText type="code">{shortcut}</ThemedText>
-    </ThemedText>
-  );
-}
+    <View style={styles.container}>
+      <StatusBar backgroundColor="#000" barStyle="light-content" />
 
-export default function HomeScreen() {
-  return (
-    <ThemedView style={styles.container}>
-      <SafeAreaView style={styles.safeArea}>
-        <ThemedView style={styles.heroSection}>
-          <AnimatedIcon />
-          <ThemedText type="title" style={styles.title}>
-            Welcome to&nbsp;Expo
-          </ThemedText>
-        </ThemedView>
+      {/* Header */}
+      <View style={styles.header}>
+        <Text style={styles.headerText}>My Profile</Text>
+      </View>
 
-        <ThemedText type="code" style={styles.code}>
-          get started
-        </ThemedText>
+      {/* Profile Image */}
+      <View style={styles.profileSection}>
+        <Image
+          source={{
+            uri: 'https://i.pinimg.com/474x/ee/62/2c/ee622cf15962071d5eaac19ac2dde0f6.jpg',
+          }}
+          style={styles.profileImage}
+        />
 
-        <ThemedView type="backgroundElement" style={styles.stepContainer}>
-          <HintRow
-            title="Try editing"
-            hint={<ThemedText type="code">src/app/index.tsx</ThemedText>}
-          />
-          <HintRow title="Dev tools" hint={getDevMenuHint()} />
-          <HintRow
-            title="Fresh start"
-            hint={<ThemedText type="code">npm run reset-project</ThemedText>}
-          />
-        </ThemedView>
+        <View style={styles.onlineBadge} />
+      </View>
 
-        {Platform.OS === 'web' && <WebBadge />}
-      </SafeAreaView>
-    </ThemedView>
+      {/* Divider */}
+      <View style={styles.divider} />
+
+      {/* Profile Details */}
+      <View style={styles.details}>
+        <Text style={styles.label}>Name</Text>
+        <Text style={styles.value}>Pasindu Katawala</Text>
+
+        <Text style={styles.label}>Email</Text>
+        <Text style={styles.value}>
+          ✉ PasinduKatawala@nsbm.ac.lk
+        </Text>
+
+        <Text style={styles.label}>Points</Text>
+        <Text style={styles.value}>★ 0</Text>
+      </View>
+
+      {/* Floating Plus Button */}
+      <TouchableOpacity
+        style={styles.floatingButton}
+        onPress={() => Alert.alert('Add', 'Button pressed!')}
+      >
+        <Text style={styles.plusText}>+</Text>
+      </TouchableOpacity>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#F4F4F4',
+  },
+
+  header: {
+    backgroundColor: '#000',
+    height: 55,
     justifyContent: 'center',
-    flexDirection: 'row',
-  },
-  safeArea: {
-    flex: 1,
-    paddingHorizontal: Spacing.four,
     alignItems: 'center',
-    gap: Spacing.three,
-    paddingBottom: BottomTabInset + Spacing.three,
-    maxWidth: MaxContentWidth,
   },
-  heroSection: {
+
+  headerText: {
+    color: '#fff',
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+
+  profileSection: {
     alignItems: 'center',
     justifyContent: 'center',
-    flex: 1,
-    paddingHorizontal: Spacing.four,
-    gap: Spacing.four,
+    marginTop: 20,
+    marginBottom: 15,
   },
-  title: {
-    textAlign: 'center',
+
+  profileImage: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    borderWidth: 4,
+    borderColor: '#fff',
   },
-  code: {
-    textTransform: 'uppercase',
+
+  onlineBadge: {
+    position: 'absolute',
+    bottom: 5,
+    right: '35%',
+    width: 18,
+    height: 18,
+    backgroundColor: '#00C853',
+    borderRadius: 9,
+    borderWidth: 2,
+    borderColor: '#fff',
   },
-  stepContainer: {
-    gap: Spacing.three,
-    alignSelf: 'stretch',
-    paddingHorizontal: Spacing.three,
-    paddingVertical: Spacing.four,
-    borderRadius: Spacing.four,
+
+  divider: {
+    height: 1,
+    backgroundColor: '#555',
+    marginHorizontal: 15,
+  },
+
+  details: {
+    paddingHorizontal: 18,
+    paddingTop: 10,
+  },
+
+  label: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#000',
+    marginTop: 12,
+  },
+
+  value: {
+    fontSize: 15,
+    color: '#333',
+    marginTop: 5,
+  },
+
+  floatingButton: {
+    position: 'absolute',
+    bottom: 25,
+    right: 20,
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    backgroundColor: '#000',
+    justifyContent: 'center',
+    alignItems: 'center',
+    elevation: 5,
+  },
+
+  plusText: {
+    fontSize: 28,
+    color: '#fff',
   },
 });
